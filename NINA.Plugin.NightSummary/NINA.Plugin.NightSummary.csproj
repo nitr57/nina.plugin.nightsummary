@@ -1,21 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>NINA.Plugin.NightSummary</AssemblyName>
     <RootNamespace>NINA.Plugin.NightSummary</RootNamespace>
-    <Platforms>x64</Platforms>
-    <UseWPF>true</UseWPF>
-    <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <Nullable>enable</Nullable>
     <ApplicationIcon>NINAPluginTemplate.ico</ApplicationIcon>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    <DefaultItemExcludes>$(DefaultItemExcludes);**/*.xaml.cs;**/*.xaml</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3296.44" />
-    <PackageReference Include="NINA.Plugin" Version="3.2.0.9001" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119.0" />
+    <ProjectReference Include="..\..\..\NINA.Plugin\NINA.Plugin.csproj" />
+    <ProjectReference Include="..\..\..\System.Windows.Compat\System.Windows.Compat.csproj" />
+    <PackageReference Include="System.Drawing.Common" Version="*" ExcludeAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,4 +53,8 @@
     </None>
   </ItemGroup>
 
+  <Target Name="PostBuildLinux" AfterTargets="PostBuildEvent">
+    <Exec Command="mkdir -p $HOME/.local/share/NINA/Plugins/3.0.0/NightSummary" />
+    <Exec Command="cp $(TargetPath) $HOME/.local/share/NINA/Plugins/3.0.0/NightSummary/" />
+  </Target>
 </Project>

@@ -241,10 +241,7 @@ namespace NINA.Plugin.NightSummary {
                 await Task.Run(() => LoadFilterClassifications());
             });
 
-            PreviewReportCommand = new RelayCommand(async () => {
-                var window = new PreviewWindow(sessionService);
-                window.Show();
-            });
+            PreviewReportCommand = new RelayCommand(() => Task.CompletedTask);
 
             LoadSessions();
             LoadFilterClassifications();
