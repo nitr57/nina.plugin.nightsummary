@@ -2,6 +2,7 @@ using NINA.Core.Utility;
 using NINA.Plugin.NightSummary.Data;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
@@ -58,6 +59,15 @@ namespace NINA.Plugin.NightSummary.Reporting {
         public async Task<string> GenerateHtmlReport(ReportData data) {
             Warnings.Clear();
             FilterHelper.ReloadOverrides();
+
+            // All numeric formatting in this method must use '.' as the decimal separator:
+            // SVG coordinates, URL query parameters, and data-attribute values are locale-neutral
+            // by spec. Override the thread culture for the lifetime of this async method so that
+            // every :F1/:F2/:F6 interpolation produces dots regardless of the system locale.
+            var savedCulture = CultureInfo.CurrentCulture;
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+            try {
+
             var sb = new StringBuilder();
 
             bool lightMode = SettingsManager.Instance.Current.ReportLightMode;
@@ -207,6 +217,10 @@ namespace NINA.Plugin.NightSummary.Reporting {
             }
 
             return html;
+
+            } finally {
+                CultureInfo.CurrentCulture = savedCulture;
+            }
         }
 
         private string BuildHeader(ReportData data) {
