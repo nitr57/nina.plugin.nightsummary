@@ -1,6 +1,30 @@
 # Night Summary — Changelog
 
 
+## v2.11.1
+
+**Bug fixes**
+- Reverted graceful session cleanup logic added in v2.11.0 which resulted in some sessions being ended prematurely by sequence interrupt triggers such as "When Becomes Unsafe". Sessions are now only ended by running the Night Summary End sequence instruction. If the End instruction never ran, the session data is preserved — use "Resend Previous Session" to generate a report. Reports from those sessions include a notice that session duration is approximate and overhead analysis is unavailable.
+
+
+## v2.11.0
+
+**New features**
+- Per-filter selector on metric charts — click a filter chip to show one filter at a time, with axes auto-rescaling so trends are visible at full resolution.
+- Session Timeline and Tonight's Preview can now show a multi-target altitude chart instead of a flat bar timeline — each target's altitude curve is plotted over its imaging window with color-coded shading per block. Toggle between Altitude and Simple views from the chip bar above the chart.
+- Rejected frame tracking — frames rejected by Target Scheduler grading or manually thumbed-down in NINA are counted in the session overview and shown in a new Rejected column in the per-target filter table, with a hover tooltip breaking down reject reasons.
+
+**Improvements**
+- Expanded metric chart options from 20 to 35 — including Sky Temperature, Sky Brightness, Wind Direction, Wind Gust, Mean ADU, Std Deviation, MAD, Exposure, Gain, Offset, Cooler Setpoint, Rotator Position, and more.
+- Reorganized the plugin options page — high-frequency actions (Preview Report, Resend Previous Session) at the top, delivery channels and equipment profile behind collapsible sections, and metric dropdowns sorted by usefulness.
+- Multiple improvements and fixes to the Overhead Analysis log parser resulting in more accurate numbers across a wider range of real-world sessions (meridian flips, guide-star retries, weather interruptions).
+
+**Bug fixes**
+- Graceful session cleanup when the sequence is stopped manually — if NINA ends the sequence before the Night Summary End instruction runs, the session is now finalized automatically. Use "Resend Previous Session" to get a report from the saved data.
+- Fixed event marker hover tooltips on metric charts not responding.
+- Fixed equipment section showing only a subset of connected equipment — equipment is now captured when the first image is saved, not at session start, so all devices are connected before the snapshot is taken.
+
+
 ## v2.10.0
 
 **New features**
