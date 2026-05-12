@@ -20,7 +20,7 @@ param(
 $ErrorActionPreference = "Stop"
 $repoRoot      = Split-Path -Parent $PSScriptRoot
 $projectDir    = Join-Path $repoRoot "NINA.Plugin.NightSummary"
-$buildDir      = Join-Path $projectDir "bin\Release\net8.0-windows"
+$buildDir      = Join-Path $projectDir "bin\Release\net10.0"
 $ninaPluginDir = Join-Path $env:LOCALAPPDATA "NINA\Plugins\3.0.0\Night Summary"
 $ninaExe       = Join-Path ${env:ProgramFiles} "N.I.N.A. - Nighttime Imaging 'N' Astronomy\NINA.exe"
 
@@ -110,8 +110,10 @@ $ninaWasRunning = Close-NINA
 
 # --- Deploy ---
 $dll = Join-Path $buildDir "NINA.Plugin.NightSummary.dll"
+$dashboardDll = Join-Path $buildDir "NINA.Plugin.NightSummary.Dashboard.dll"
 if (Test-Path $ninaPluginDir) {
     Copy-Item $dll $ninaPluginDir -Force
+    Copy-Item $dashboardDll $ninaPluginDir -Force
     Write-Host "Deployed to NINA plugins folder." -ForegroundColor Green
 } else {
     Write-Host "NINA plugin folder not found at: $ninaPluginDir" -ForegroundColor Red

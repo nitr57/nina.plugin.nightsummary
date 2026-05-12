@@ -15,7 +15,7 @@
 $ErrorActionPreference = "Stop"
 $repoRoot   = Split-Path -Parent $PSScriptRoot
 $projectDir = Join-Path $repoRoot "NINA.Plugin.NightSummary"
-$buildDir   = Join-Path $projectDir "bin\Release\net8.0-windows"
+$buildDir   = Join-Path $projectDir "bin\Release\net10.0"
 $zipPath    = Join-Path $PSScriptRoot "NINA.Plugin.NightSummary.zip"
 $manifestPath = Join-Path $repoRoot "manifest.json"
 $ninaPluginDir = Join-Path $env:LOCALAPPDATA "NINA\Plugins\3.0.0\Night Summary"
@@ -73,7 +73,9 @@ Write-Host "repository.json updated." -ForegroundColor Green
 
 # --- Deploy locally ---
 if (Test-Path $ninaPluginDir) {
+    $dashboardDll = Join-Path $buildDir "NINA.Plugin.NightSummary.Dashboard.dll"
     Copy-Item $dll $ninaPluginDir -Force
+    Copy-Item $dashboardDll $ninaPluginDir -Force
     Write-Host "Deployed to local NINA plugins folder." -ForegroundColor Green
 } else {
     Write-Host "Local NINA plugin folder not found - skipping local deploy." -ForegroundColor Yellow
